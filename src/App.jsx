@@ -75,10 +75,20 @@ export default function TasteOfDelhiLanding() {
 
       {/* Hero */}
 
-      <section className="relative text-white text-center py-32 bg-[url('https://images.unsplash.com/photo-1504674900247-0877df9cc836')] bg-cover bg-center">
+      <section className="relative text-white text-center py-32 overflow-hidden">
 
+        {/* Hero Image */}
+        <img
+          src="/hero.webp"
+          alt="Delicious Indian Food"
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="eager"
+        />
+
+        {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/60"></div>
 
+        {/* Hero Content */}
         <div className="relative z-10 max-w-3xl mx-auto">
 
           <h2 className="text-5xl font-bold mb-6">
@@ -102,7 +112,7 @@ export default function TasteOfDelhiLanding() {
 
       {/* Rating */}
 
-      
+
       {/* Quality */}
 
       <section className="py-16 bg-white">
@@ -158,11 +168,10 @@ export default function TasteOfDelhiLanding() {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2 rounded-full font-medium border transition ${
-                activeCategory === cat
+              className={`px-5 py-2 rounded-full font-medium border transition ${activeCategory === cat
                   ? "bg-red-600 text-white shadow"
                   : "bg-white hover:bg-red-50"
-              }`}
+                }`}
             >
 
               {cat}
@@ -257,21 +266,21 @@ export default function TasteOfDelhiLanding() {
           ))}
 
         </div>
-<section className="py-10 bg-white text-center">
+        <section className="py-10 bg-white text-center">
 
-        <div className="flex justify-center gap-1 mb-2">
+          <div className="flex justify-center gap-1 mb-2">
 
-          {[...Array(5)].map((_, i) => (
-            <Star key={i} fill="gold" stroke="gold" />
-          ))}
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} fill="gold" stroke="gold" />
+            ))}
 
-        </div>
+          </div>
 
-        <p className="text-lg font-semibold">
-          Rated 4.8 / 5 by happy customers
-        </p>
+          <p className="text-lg font-semibold">
+            Rated 4.8 / 5 by happy customers
+          </p>
 
-      </section>
+        </section>
 
       </section>
 
