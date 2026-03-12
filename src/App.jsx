@@ -1,389 +1,293 @@
-import { MapPin, Phone, Leaf, ShieldCheck, Sparkles, Star } from "lucide-react";
+import { MapPin, Phone, Leaf, ShieldCheck, Sparkles, Star, Menu, X } from "lucide-react";
 import { useState } from "react";
 
-export default function TasteOfDelhiLanding() {
+const popularMenu = {
+  Chaat: [
+    { name: "Raj Kachori", price: "₹120", img: "https://www.awesomecuisine.com/wp-content/uploads/2009/11/Raj-Kachori.jpg" },
+    { name: "Papdi Chaat", price: "₹90", img: "https://i0.wp.com/www.thecrumbstories.com/wp-content/uploads/2024/10/IMG_0180-scaled.jpg?resize=400,300&ssl=1" },
+    { name: "Aloo Tikki", price: "₹70", img: "https://www.vegrecipesofindia.com/wp-content/uploads/2012/12/aloo-tikki-chole-recipe-5-280x280.jpg" },
+  ],
+  "Fast Food": [
+    { name: "Veg Burger", price: "₹80", img: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&q=80" },
+    { name: "French Fries", price: "₹90", img: "https://images.unsplash.com/photo-1576107232684-1279f390859f?w=400&q=80" },
+    { name: "Pizza Slice", price: "₹120", img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80" },
+  ],
+  Snacks: [
+    { name: "Samosa", price: "₹20", img: "https://img.freepik.com/premium-photo/veg-samosa-tea-time-snack-from-india-served-with-green-fried-chillies-selective-focus_466689-18194.jpg?w=400" },
+    { name: "Bread Pakora", price: "₹40", img: "https://dinedelicious.in/wp-content/uploads/2021/07/Bread-Pakora-12.jpg" },
+    { name: "Paneer Pakora", price: "₹120", img: "https://thebellyrulesthemind.net/wp-content/uploads/2023/10/IMG_9826-scaled.jpg" },
+  ],
+  "North Indian": [
+    { name: "Paneer Butter Masala", price: "₹220", img: "https://www.sharmispassions.com/wp-content/uploads/2015/09/paneer-butter-masala-step17.jpg" },
+    { name: "Dal Makhani", price: "₹200", img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&q=80" },
+  ],
+  "Rice & Specials": [
+    { name: "Veg Biryani", price: "₹180", img: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&q=80" },
+    { name: "Special Thali", price: "₹250", img: "https://cdn.uengage.io/uploads/28289/image-KLLIHA-1768657848.png" },
+  ],
+};
 
+const gallery = [
+  "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80",
+  "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?w=600&q=80",
+  "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&q=80",
+  "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600&q=80",
+  "https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=600&q=80",
+  "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80",
+];
+
+const reviews = [
+  { name: "Rahul", text: "Amazing chaat and very authentic Delhi taste. Reminded me of Chandni Chowk!", rating: 5 },
+  { name: "Sneha", text: "Clean place and the food quality is excellent. Dal Makhani was outstanding.", rating: 5 },
+  { name: "Amit", text: "Best North Indian food in the area. The Raj Kachori is a must-try!", rating: 4 },
+];
+
+export default function TasteOfDelhi() {
   const [activeCategory, setActiveCategory] = useState("Chaat");
-
-  const popularMenu = {
-    Chaat: [
-      { name: "Raj Kachori", price: "₹120", img: "https://imgs.search.brave.com/s7VEzH3GYVMlWw5p1udX7ltlpfZcYvsLg5SxZQJzAeM/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/YXdlc29tZWN1aXNp/bmUuY29tL3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDA5LzExL1Jh/ai1LYWNob3JpLmpw/Zw" },
-      { name: "Papdi Chaat", price: "₹90", img: "https://imgs.search.brave.com/QReI-JA-3Qa8NJYB24EjcSHPplOpB1DuHL9R1Dm0-zc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pMC53/cC5jb20vd3d3LnRo/ZWNydW1ic3Rvcmll/cy5jb20vd3AtY29u/dGVudC91cGxvYWRz/LzIwMjQvMTAvSU1H/XzAxODAtc2NhbGVk/LmpwZz9yZXNpemU9/ODAwLDUzMCZzc2w9/MQ" },
-      { name: "Aloo Tikki", price: "₹70", img: "https://imgs.search.brave.com/1p6YL86WrpAH79jAdxaCd9os5xQliAcQuReQWivIUT4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dmVncmVjaXBlc29m/aW5kaWEuY29tL3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDEyLzEy/L2Fsb28tdGlra2kt/Y2hvbGUtcmVjaXBl/LTUtMjgweDI4MC5q/cGc" }
-    ],
-    "Fast Food": [
-      { name: "Veg Burger", price: "₹80", img: "https://images.unsplash.com/photo-1550547660-d9450f859349" },
-      { name: "French Fries", price: "₹90", img: "https://images.unsplash.com/photo-1576107232684-1279f390859f" },
-      { name: "Pizza Slice", price: "₹120", img: "https://imgs.search.brave.com/j4GKwCl5wi7xQEig6k3vAPfAuCNbYyj4Gow0PM9sl8s/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMjIz/ODgxODc5OC9waG90/by9waXp6YS1zbGlj/ZS13aXRoLWhhbS1z/YWxhbWktYW5kLXZl/Z2V0YWJsZXMtb24t/YS1wbGF0ZS5qcGc_/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9c2VF/ZWFDRVV0Qm12Q2Rn/YlNKYWl6REJ4Y2Rv/blowVFZ1RFNsTm9u/V3U4az0" }
-    ],
-    Snacks: [
-      { name: "Samosa", price: "₹20", img: "https://imgs.search.brave.com/8-3CRgCxuT2GlH1nzY_0VeJp1qMujdV2SeqnnVW7C3Y/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS1waG90/by92ZWctc2Ftb3Nh/LXRlYS10aW1lLXNu/YWNrLWZyb20taW5k/aWEtc2VydmVkLXdp/dGgtZ3JlZW4tZnJp/ZWQtY2hpbGxpZXMt/c2VsZWN0aXZlLWZv/Y3VzXzQ2NjY4OS0x/ODE5NC5qcGc_c2Vt/dD1haXNfaHlicmlk/Jnc9NzQwJnE9ODA" },
-      { name: "Bread Pakora", price: "₹40", img: "https://imgs.search.brave.com/Bl3Xy7j0N40hCzk1Fr9ILHxo4vOthbcr3VczA88CFWg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9kaW5l/ZGVsaWNpb3VzLmlu/L3dwLWNvbnRlbnQv/dXBsb2Fkcy8yMDIx/LzA3L0JyZWFkLVBh/a29yYS0xMi5qcGc" },
-      { name: "Paneer Pakora", price: "₹120", img: "https://imgs.search.brave.com/I4a3CUJ3EgeOziK4nq_2chMwZN5Ra4PU8nDR6ggb2Wg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90aGVi/ZWxseXJ1bGVzdGhl/bWluZC5uZXQvd3At/Y29udGVudC91cGxv/YWRzLzIwMjMvMTAv/SU1HXzk4MjYtc2Nh/bGVkLmpwZw" }
-    ],
-    "North Indian": [
-      { name: "Paneer Butter Masala", price: "₹220", img: "https://imgs.search.brave.com/epV5Lf-4bUAz4cZFnvtmgWhzQPD13aHyNQQLHJm-nfk/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/c2hhcm1pc3Bhc3Np/b25zLmNvbS93cC1j/b250ZW50L3VwbG9h/ZHMvMjAxNS8wOS9w/YW5lZXItYnV0dGVy/LW1hc2FsYS1zdGVw/MTcuanBn" },
-      { name: "Dal Makhani", price: "₹200", img: "https://imgs.search.brave.com/x20myem4Tuk9Nyh0yLfm7XQPZP6ottJ6M23gVAN76Y0/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzE2LzY0LzM1LzEx/LzM2MF9GXzE2NjQz/NTExNjRfZGpzYmZS/Y3JTakRtYlBuM2Fv/YUk0S0E1UEhQSExa/WWYuanBn" }
-    ],
-    "Rice & Specials": [
-      { name: "Veg Biryani", price: "₹180", img: "https://imgs.search.brave.com/O1NvzGIUQl7nFi52sSXOAqPA63M7EeOMuM0ZEm4rAl0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/c2h1dHRlcnN0b2Nr/LmNvbS9pbWFnZS1w/aG90by92ZWctYmly/eWFuaS1yZWNpcGUt/MjYwbnctMTA5NDA2/NjUxMC5qcGc" },
-      { name: "Special Thali", price: "₹250", img: "https://imgs.search.brave.com/xTpf3Lfn2I7eUeCE1kUz5szodd_dNxLudGE1TXtJDss/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/dWVuZ2FnZS5pby91/cGxvYWRzLzI4Mjg5/L2ltYWdlLUtMTElI/QS0xNzY4NjU3ODQ4/LnBuZw" }
-    ]
-  };
-
-  const gallery = [
-    "https://images.unsplash.com/photo-1504674900247-0877df9cc836",
-    "https://images.unsplash.com/photo-1600891964599-f61ba0e24092",
-    "https://images.unsplash.com/photo-1601050690597-df0568f70950",
-    "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe",
-    "https://images.unsplash.com/photo-1606787366850-de6330128bfc",
-    "https://images.unsplash.com/photo-1555939594-58d7cb561ad1"
-  ];
-
-  const reviews = [
-    { name: "Rahul", text: "Amazing chaat and very authentic Delhi taste.", rating: 5 },
-    { name: "Sneha", text: "Clean place and the food quality is excellent.", rating: 5 },
-    { name: "Amit", text: "Best North Indian food in the area.", rating: 4 }
-  ];
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
+    <div className="min-h-screen bg-orange-50 text-gray-900">
 
-    <div className="min-h-screen bg-gray-50 text-gray-800 scroll-smooth">
-
-      {/* Navbar */}
-
-      <nav className="sticky top-0 z-50 backdrop-blur bg-white/80 border-b border-gray-200">
-
-        <div className="max-w-7xl mx-auto flex justify-between items-center p-6">
-
-          <h1 className="text-2xl font-bold text-red-600 tracking-wide">
-            Taste Of Delhi
-          </h1>
-
-          <div className="space-x-8 font-medium text-gray-700">
-
-            <a href="#menu" className="hover:text-red-600 transition">Menu</a>
-            <a href="#gallery" className="hover:text-red-600 transition">Gallery</a>
-            <a href="#about" className="hover:text-red-600 transition">About</a>
-            <a href="#contact" className="hover:text-red-600 transition">Contact</a>
-
+      {/* NAV */}
+      <nav className="sticky top-0 z-50 bg-orange-50/90 backdrop-blur-md border-b border-orange-200">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+          <span className="text-xl font-extrabold text-red-600 tracking-tight">
+            Taste <span className="text-orange-500">of Delhi</span>
+          </span>
+          <div className="hidden md:flex items-center gap-8">
+            {["menu", "gallery", "about", "contact"].map((s) => (
+              <a key={s} href={`#${s}`} className="capitalize text-sm font-medium text-gray-600 hover:text-red-600 transition-colors">
+                {s}
+              </a>
+            ))}
+            <a href="tel:+919557884630" className="bg-red-600 hover:bg-red-700 text-white text-sm font-medium px-5 py-2 rounded-full transition-colors">
+              Call Now
+            </a>
           </div>
-
+          <button className="md:hidden p-2 text-gray-600" onClick={() => setMobileOpen(true)}>
+            <Menu size={24} />
+          </button>
         </div>
-
       </nav>
 
-      {/* Hero */}
+      {/* MOBILE MENU */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 bg-orange-50 flex flex-col items-center justify-center gap-10">
+          <button className="absolute top-5 right-5 text-gray-600" onClick={() => setMobileOpen(false)}>
+            <X size={28} />
+          </button>
+          {["menu", "gallery", "about", "contact"].map((s) => (
+            <a key={s} href={`#${s}`}
+              className="capitalize text-3xl font-extrabold text-gray-800 hover:text-red-600 transition-colors"
+              onClick={() => setMobileOpen(false)}>
+              {s}
+            </a>
+          ))}
+        </div>
+      )}
 
-      <section className="relative text-white text-center py-32 overflow-hidden">
-
-        {/* Hero Image */}
+      {/* HERO */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black/90">
         <img
-          src="/hero.webp"
-          alt="Delicious Indian Food"
-          className="absolute inset-0 w-full h-full object-cover"
-          loading="eager"
+          src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=1400&q=80"
+          alt="Indian food"
+          className="absolute inset-0 w-full h-full object-cover opacity-20"
         />
-
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/60"></div>
-
-        {/* Hero Content */}
-        <div className="relative z-10 max-w-3xl mx-auto">
-
-          <h2 className="text-5xl font-bold mb-6">
-            Authentic Delhi Flavours in Meerut
-          </h2>
-
-          <p className="text-lg mb-8 text-gray-200">
-            Taste the famous street food and North Indian dishes inspired by Delhi.
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-orange-50 to-transparent" />
+        <div className="relative z-10 text-center px-5 max-w-3xl mx-auto py-24">
+          <span className="inline-block bg-white/10 border border-white/20 text-yellow-300 text-xs font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-6">
+            🌶 Meerut's Favourite Since 2015
+          </span>
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-white leading-tight mb-5 tracking-tight">
+            Authentic <em className="not-italic text-yellow-300">Delhi</em><br />Flavours
+          </h1>
+          <p className="text-lg text-white/70 mb-10 font-light max-w-xl mx-auto">
+            Famous street food &amp; rich North Indian dishes — straight from the heart of Delhi to Meerut.
           </p>
-
-          <a
-            href="#menu"
-            className="px-8 py-3 bg-red-600 hover:bg-red-700 rounded-full font-semibold shadow-xl transition"
-          >
-            Explore Menu
-          </a>
-
-        </div>
-
-      </section>
-
-      {/* Rating */}
-
-
-      {/* Quality */}
-
-      <section className="py-16 bg-white">
-
-        <h2 className="text-3xl font-bold text-center mb-12">Why People Love Our Food</h2>
-
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto px-6 text-center">
-
-          <div className="p-6 rounded-2xl shadow hover:shadow-xl transition">
-
-            <Sparkles className="mx-auto mb-4" size={40} />
-
-            <h3 className="font-bold text-lg mb-2">Clean & Hygienic</h3>
-
-            <p>Our kitchen and dining area follow strict hygiene standards.</p>
-
+          <div className="flex flex-wrap gap-3 justify-center">
+            <a href="#menu" className="bg-orange-400 hover:bg-orange-500 text-gray-900 font-semibold px-8 py-3 rounded-full transition-all shadow-lg">
+              Explore Menu
+            </a>
+            <a href="#contact" className="border border-white/30 hover:bg-white/10 text-white font-semibold px-8 py-3 rounded-full transition-all">
+              Find Us
+            </a>
           </div>
-
-          <div className="p-6 rounded-2xl shadow hover:shadow-xl transition">
-
-            <Leaf className="mx-auto mb-4" size={40} />
-
-            <h3 className="font-bold text-lg mb-2">Fresh Ingredients</h3>
-
-            <p>Fresh vegetables and spices used daily for authentic taste.</p>
-
-          </div>
-
-          <div className="p-6 rounded-2xl shadow hover:shadow-xl transition">
-
-            <ShieldCheck className="mx-auto mb-4" size={40} />
-
-            <h3 className="font-bold text-lg mb-2">Pure Taste</h3>
-
-            <p>Authentic Delhi recipes cooked with care.</p>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      {/* Popular Menu */}
-
-      <section id="menu" className="p-12 max-w-6xl mx-auto">
-
-        <h2 className="text-3xl font-bold text-center mb-8">Popular Menu</h2>
-
-        <div className="flex flex-wrap justify-center gap-4 mb-10">
-
-          {Object.keys(popularMenu).map((cat) => (
-
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2 rounded-full font-medium border transition ${activeCategory === cat
-                  ? "bg-red-600 text-white shadow"
-                  : "bg-white hover:bg-red-50"
-                }`}
-            >
-
-              {cat}
-
-            </button>
-
-          ))}
-
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-8">
-
-          {popularMenu[activeCategory].map((item, index) => (
-
-            <div
-              key={index}
-              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1 flex items-center gap-4 p-4"
-            >
-
-              <img
-                src={item.img}
-                alt={item.name}
-                className="w-24 h-24 object-cover rounded-xl hover:scale-105 transition"
-              />
-
-              <div className="flex justify-between w-full items-center">
-
-                <span className="font-medium">{item.name}</span>
-
-                <span className="font-bold">{item.price}</span>
-
+          <div className="flex flex-wrap justify-center gap-10 mt-16">
+            {[["500+", "Customers Daily"], ["4.8★", "Avg Rating"], ["50+", "Menu Items"]].map(([num, label]) => (
+              <div key={label} className="text-center">
+                <span className="block text-3xl font-extrabold text-yellow-300">{num}</span>
+                <span className="text-white/50 text-xs uppercase tracking-widest">{label}</span>
               </div>
-
-            </div>
-
-          ))}
-
-        </div>
-
-      </section>
-
-      {/* Gallery */}
-
-      <section id="gallery" className="py-16 bg-gray-100">
-
-        <h2 className="text-3xl font-bold text-center mb-12">Food Gallery</h2>
-
-        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto px-6">
-
-          {gallery.map((img, index) => (
-
-            <img
-              key={index}
-              src={img}
-              className="rounded-2xl shadow-md object-cover h-60 w-full hover:scale-105 transition duration-500"
-            />
-
-          ))}
-
-        </div>
-
-      </section>
-
-      {/* Reviews */}
-
-      <section className="py-16 bg-white">
-
-        <h2 className="text-3xl font-bold text-center mb-12">Customer Reviews</h2>
-
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto px-6">
-
-          {reviews.map((review, index) => (
-
-            <div className="shadow-md hover:shadow-xl transition rounded-2xl p-6 bg-white border">
-
-              <div className="flex gap-1 mb-3">
-
-                {[...Array(review.rating)].map((_, i) => (
-
-                  <Star key={i} size={18} fill="gold" />
-
-                ))}
-
-              </div>
-
-              <p className="mb-3">{review.text}</p>
-
-              <p className="font-semibold">— {review.name}</p>
-
-            </div>
-
-          ))}
-
-        </div>
-        <section className="py-10 bg-white text-center">
-
-          <div className="flex justify-center gap-1 mb-2">
-
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} fill="gold" stroke="gold" />
             ))}
-
           </div>
+        </div>
+      </section>
 
-          <p className="text-lg font-semibold">
-            Rated 4.8 / 5 by happy customers
+      {/* WHY US */}
+      <section className="py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-14">
+            <span className="text-orange-500 text-xs font-semibold tracking-widest uppercase">Why Choose Us</span>
+            <h2 className="text-4xl font-extrabold text-gray-900 mt-2">
+              Why People <em className="not-italic text-red-600">Love</em> Our Food
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {[
+              { icon: <Sparkles size={22} />, title: "Clean & Hygienic", desc: "Our kitchen and dining area follow strict hygiene standards every single day." },
+              { icon: <Leaf size={22} />, title: "Fresh Ingredients", desc: "Fresh vegetables and spices sourced daily for that unforgettable authentic taste." },
+              { icon: <ShieldCheck size={22} />, title: "Pure Taste", desc: "Authentic Delhi recipes, cooked with love, tradition, and care." },
+            ].map(({ icon, title, desc }) => (
+              <div key={title} className="group p-8 rounded-2xl border border-orange-100 bg-orange-50 hover:bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-600 rounded-xl flex items-center justify-center text-white mb-5 group-hover:scale-110 transition-transform">
+                  {icon}
+                </div>
+                <h3 className="font-bold text-lg text-gray-900 mb-2">{title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* MENU */}
+      <section id="menu" className="py-24 bg-orange-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <span className="text-orange-500 text-xs font-semibold tracking-widest uppercase">What We Serve</span>
+            <h2 className="text-4xl font-extrabold text-gray-900 mt-2">Popular <em className="not-italic text-red-600">Menu</em></h2>
+          </div>
+          <div className="flex flex-wrap justify-center gap-2 mb-10">
+            {Object.keys(popularMenu).map((cat) => (
+              <button key={cat} onClick={() => setActiveCategory(cat)}
+                className={`px-5 py-2 rounded-full text-sm font-medium border transition-all ${
+                  activeCategory === cat
+                    ? "bg-red-600 text-white border-red-600 shadow-md"
+                    : "bg-white text-gray-600 border-orange-200 hover:border-orange-400 hover:text-orange-600"
+                }`}>
+                {cat}
+              </button>
+            ))}
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {popularMenu[activeCategory].map((item) => (
+              <div key={item.name} className="group bg-white rounded-2xl overflow-hidden flex flex-col sm:flex-row sm:items-center shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                <div className="w-full h-48 sm:w-28 sm:h-28 flex-shrink-0 overflow-hidden">
+                  <img src={item.img} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                </div>
+                <div className="px-5 py-4 sm:py-0 flex-1">
+                  <p className="font-bold text-gray-800 mb-2">{item.name}</p>
+                  <span className="bg-gradient-to-r from-orange-400 to-red-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                    {item.price}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* GALLERY */}
+      <section id="gallery" className="py-24 bg-gray-900">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <span className="text-yellow-400 text-xs font-semibold tracking-widest uppercase">Visual Feast</span>
+            <h2 className="text-4xl font-extrabold text-white mt-2">Food <em className="not-italic text-orange-400">Gallery</em></h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {gallery.map((img, i) => (
+              <div key={i} className={`overflow-hidden rounded-2xl ${i === 0 ? "row-span-2" : "h-44"}`}>
+                <img src={img} alt="food" className="w-full h-full object-cover hover:scale-110 transition-transform duration-500 brightness-90 hover:brightness-100" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* REVIEWS */}
+      <section className="py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-6">
+            <span className="text-orange-500 text-xs font-semibold tracking-widest uppercase">Testimonials</span>
+            <h2 className="text-4xl font-extrabold text-gray-900 mt-2">Customer <em className="not-italic text-red-600">Reviews</em></h2>
+          </div>
+          <div className="flex justify-center mb-12">
+            <div className="inline-flex items-center gap-3 bg-gradient-to-r from-orange-400 to-red-600 text-white px-7 py-3 rounded-full shadow-lg font-bold text-lg">
+              <div className="flex gap-0.5">{[...Array(5)].map((_, i) => <Star key={i} size={15} fill="white" stroke="white" />)}</div>
+              Rated 4.8 / 5
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {reviews.map((r) => (
+              <div key={r.name} className="relative bg-orange-50 border border-orange-100 rounded-2xl p-7 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+                <span className="absolute top-2 right-4 text-8xl font-extrabold text-orange-200 leading-none select-none">"</span>
+                <div className="flex gap-1 mb-4">
+                  {[...Array(r.rating)].map((_, i) => <Star key={i} size={15} fill="#f59e0b" stroke="#f59e0b" />)}
+                </div>
+                <p className="text-gray-600 text-sm leading-relaxed mb-4">{r.text}</p>
+                <p className="font-bold text-gray-800 text-sm">— {r.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ABOUT */}
+      <section id="about" className="py-24 bg-gradient-to-br from-red-950 via-red-800 to-orange-700 relative overflow-hidden">
+        <div className="max-w-2xl mx-auto px-4 text-center relative z-10">
+          <span className="text-yellow-300 text-xs font-semibold tracking-widest uppercase">Our Story</span>
+          <h2 className="text-4xl font-extrabold text-white mt-2 mb-6">About <em className="not-italic text-yellow-300">Taste of Delhi</em></h2>
+          <p className="text-white/70 text-lg font-light leading-relaxed">
+            Taste Of Delhi brings the vibrant flavours of Delhi street food to Meerut. From spicy chaats and delicious snacks
+            to rich North Indian curries and thalis, every dish is prepared with authentic recipes and the freshest ingredients.
           </p>
-
-        </section>
-
-      </section>
-
-      {/* About */}
-
-      <section id="about" className="bg-gray-100 py-16 px-6">
-
-        <div className="max-w-3xl mx-auto text-center">
-
-          <h2 className="text-3xl font-bold mb-4">About Taste Of Delhi</h2>
-
-          <p>
-
-            Taste Of Delhi brings the vibrant flavours of Delhi street food to
-            Meerut. From spicy chaats and delicious snacks to rich North Indian
-            curries and thalis, every dish is prepared with authentic recipes
-            and fresh ingredients.
-
-          </p>
-
         </div>
-
       </section>
 
-      {/* Map */}
-
-      <section className="py-16 px-6 bg-white">
-
-        <div className="max-w-5xl mx-auto text-center">
-
-          <h2 className="text-3xl font-bold mb-6">Find Us Easily</h2>
-
-          <div className="rounded-2xl overflow-hidden shadow-lg mb-6">
-
-            <iframe
-              src="https://www.google.com/maps?q=Taste%20of%20Delhi%20Meerut&output=embed"
-              width="100%"
-              height="350"
-              loading="lazy"
-            ></iframe>
-
+      {/* MAP */}
+      <section className="py-24 bg-orange-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <span className="text-orange-500 text-xs font-semibold tracking-widest uppercase">Location</span>
+          <h2 className="text-4xl font-extrabold text-gray-900 mt-2 mb-10">Find <em className="not-italic text-red-600">Us Easily</em></h2>
+          <div className="rounded-3xl overflow-hidden shadow-2xl border border-orange-200">
+            <iframe src="https://www.google.com/maps?q=Taste%20of%20Delhi%20Meerut&output=embed"
+              width="100%" height="360" loading="lazy" className="block" />
           </div>
-
         </div>
-
       </section>
 
-      {/* Contact */}
-
-      <section id="contact" className="py-16 px-6">
-
-        <div className="max-w-3xl mx-auto text-center">
-
-          <h2 className="text-3xl font-bold mb-6">Visit Us</h2>
-
-          <div className="space-y-3">
-
-            <p className="flex justify-center items-center gap-2">
-              <MapPin size={18} /> Ganga Nagar, Meerut
-            </p>
-
-            <p className="flex justify-center items-center gap-2">
-              <Phone size={18} /> +91 95578 84630
-            </p>
-
-            <p>Open Daily: 8:30 AM – 10:30 PM</p>
-
+      {/* CONTACT */}
+      <section id="contact" className="py-24 bg-white">
+        <div className="max-w-sm mx-auto px-4 text-center">
+          <span className="text-orange-500 text-xs font-semibold tracking-widest uppercase">Get In Touch</span>
+          <h2 className="text-4xl font-extrabold text-gray-900 mt-2 mb-10">Visit <em className="not-italic text-red-600">Us</em></h2>
+          <div className="flex flex-col gap-4">
+            {[
+              { icon: <MapPin size={18} className="text-red-600 flex-shrink-0" />, text: "Ganga Nagar, Meerut" },
+              { icon: <Phone size={18} className="text-red-600 flex-shrink-0" />, text: "+91 95578 84630" },
+              { icon: <span className="text-red-600 text-sm flex-shrink-0">⏰</span>, text: "Open Daily: 8:30 AM – 10:30 PM" },
+            ].map(({ icon, text }) => (
+              <div key={text} className="flex items-center justify-center gap-3 bg-orange-50 border border-orange-100 rounded-xl px-5 py-4 text-gray-700 text-sm font-medium">
+                {icon} {text}
+              </div>
+            ))}
           </div>
-
         </div>
-
       </section>
 
-      {/* Floating Call */}
-
-      <a
-        href="tel:+919557884630"
-        className="fixed bottom-6 right-6 bg-red-600 hover:bg-red-700 text-white p-4 rounded-full shadow-lg transition"
-      >
-
-        <Phone size={22} />
-
-      </a>
-
-      {/* Footer */}
-
-      <footer className="bg-gray-900 text-gray-300 text-center py-10">
-
-        <h3 className="text-xl font-semibold text-white mb-2">
-          Taste Of Delhi
-        </h3>
-
-        <p className="mb-4">
-          Authentic Delhi street food experience in Meerut
-        </p>
-
-        <p className="text-sm">
-          © {new Date().getFullYear()} Taste Of Delhi. All rights reserved.
-        </p>
-
+      {/* FOOTER */}
+      <footer className="bg-gray-950 py-12 text-center">
+        <p className="text-2xl font-extrabold text-white mb-1">Taste <span className="text-orange-400">of Delhi</span></p>
+        <p className="text-gray-500 text-sm">Authentic Delhi street food experience in Meerut</p>
+        <p className="text-gray-700 text-xs mt-4">© {new Date().getFullYear()} Taste Of Delhi. All rights reserved.</p>
       </footer>
 
+      {/* Floating Call */}
+      <a href="tel:+919557884630"
+        className="fixed bottom-4 right-4 z-50 bg-red-600 hover:bg-red-700 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-all">
+        <Phone size={22} />
+      </a>
     </div>
-
   );
 }
