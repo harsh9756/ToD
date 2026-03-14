@@ -7,10 +7,10 @@ function useParams() {
   useEffect(() => {
     const p = new URLSearchParams(window.location.search);
     setParams({
-      name:     p.get("name")     || null,
-      city:     p.get("city")     || null,
-      phone:    p.get("phone")    || null,
-      rating:   p.get("rating")   ? parseFloat(p.get("rating")) : null,
+      name: p.get("name") || null,
+      city: p.get("city") || null,
+      phone: p.get("phone") || null,
+      rating: p.get("rating") ? parseFloat(p.get("rating")) : null,
       category: p.get("category") || null,
     });
   }, []);
@@ -58,17 +58,15 @@ const reviews = [
   { name: "Amit", text: "Best North Indian food in the area. The Raj Kachori is a must-try!", rating: 4 },
 ];
 
-// ─── Demo badge shown when accessed via demo link ─────────────────────────────
-function DemoBanner({ businessName }) {
-  const [visible, setVisible] = useState(true);
-  if (!visible) return null;
+// ─── Demo banner — controlled by parent ───────────────────────────────────────
+function DemoBanner({ businessName, onClose }) {
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] bg-yellow-400 text-black px-4 py-2.5 flex items-center justify-between text-sm font-medium shadow-lg">
       <span>
         👋 Hey <strong>{businessName}</strong>! This is a <strong>free demo website</strong> we built for you.
         Like it? We can make it live in 2 days 🚀
       </span>
-      <button onClick={() => setVisible(false)} className="ml-4 shrink-0 hover:opacity-70 transition">
+      <button onClick={onClose} className="ml-4 shrink-0 hover:opacity-70 transition">
         <X size={16} />
       </button>
     </div>
@@ -79,36 +77,43 @@ export default function TasteOfDelhi() {
   const params = useParams();
   const [activeCategory, setActiveCategory] = useState("Chaat");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [bannerVisible, setBannerVisible] = useState(true);
 
   // ─── Dynamic values from URL params ─────────────────────────────────────────
   const businessName = params.name || "Taste of Delhi";
-  const city         = params.city || "Meerut";
-  const phone        = params.phone || "+91 95578 84630";
-  const rating       = params.rating || 4.8;
-  const isDemo       = !!params.name; // show banner only if params present
+  const city = params.city || "Meerut";
+  const phone = params.phone || "+91 95578 84630";
+  const rating = params.rating || 4.8;
+  const isDemo = !!params.name;
 
-  // Format phone for tel: link
   const telPhone = phone.replace(/[^\d+]/g, "");
   const waLink = `https://wa.me/${telPhone.replace("+", "")}?text=${encodeURIComponent(`Hi! I saw your demo website and I'm interested.`)}`;
 
-  // Star display
-  const fullStars  = Math.floor(rating);
-  const hasHalf    = rating % 1 >= 0.5;
+  const fullStars = Math.floor(rating);
+  const hasHalf = rating % 1 >= 0.5;
 
   return (
     <div className="min-h-screen bg-orange-50 text-gray-900">
 
       {/* Demo banner */}
-      {isDemo && <DemoBanner businessName={businessName} />}
+      {isDemo && bannerVisible && (
+        <DemoBanner businessName={businessName} onClose={() => setBannerVisible(false)} />
+      )}
 
       {/* NAV */}
-      <nav className={`sticky z-50 bg-orange-50/90 backdrop-blur-md border-b border-orange-200 ${isDemo ? "top-10" : "top-0"}`}>
+      <nav className={`sticky z-50 bg-orange-50/90 backdrop-blur-md border-b border-orange-200 ${isDemo && bannerVisible ? "top-10" : "top-0"}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
           <span className="text-xl font-extrabold text-red-600 tracking-tight">
-            {businessName.split(" ").slice(0, -1).join(" ") || businessName}{" "}
-            <span className="text-orange-500">
-              {businessName.split(" ").slice(-1)}
-            </span>
+            {businessName.split(" ").length > 1 ? (
+              <>
+                {businessName.split(" ").slice(0, -1).join(" ")}{" "}
+                <span className="text-orange-500">
+                  {businessName.split(" ").slice(-1)}
+                </span>
+              </>
+            ) : (
+              <span className="text-orange-500">{businessName}</span>
+            )}
           </span>
           <div className="hidden md:flex items-center gap-8">
             {["menu", "gallery", "about", "contact"].map((s) => (
@@ -169,8 +174,6 @@ export default function TasteOfDelhi() {
               Find Us
             </a>
           </div>
-
-          {/* Dynamic stats */}
           <div className="flex flex-wrap justify-center gap-10 mt-16">
             <div className="text-center">
               <span className="block text-3xl font-extrabold text-yellow-300">500+</span>
@@ -225,11 +228,10 @@ export default function TasteOfDelhi() {
           <div className="flex flex-wrap justify-center gap-2 mb-10">
             {Object.keys(defaultMenu).map((cat) => (
               <button key={cat} onClick={() => setActiveCategory(cat)}
-                className={`px-5 py-2 rounded-full text-sm font-medium border transition-all ${
-                  activeCategory === cat
+                className={`px-5 py-2 rounded-full text-sm font-medium border transition-all ${activeCategory === cat
                     ? "bg-red-600 text-white border-red-600 shadow-md"
                     : "bg-white text-gray-600 border-orange-200 hover:border-orange-400 hover:text-orange-600"
-                }`}>
+                  }`}>
                 {cat}
               </button>
             ))}
@@ -346,7 +348,6 @@ export default function TasteOfDelhi() {
             </div>
           </div>
 
-          {/* WhatsApp CTA for demo */}
           {isDemo && (
             <a
               href={waLink}
@@ -355,8 +356,8 @@ export default function TasteOfDelhi() {
               className="mt-6 flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-3 rounded-full transition-colors shadow-lg w-full"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.856L.054 23.447a.5.5 0 0 0 .607.61l5.805-1.525A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 0 1-5.012-1.374l-.36-.214-3.733.98.995-3.64-.234-.374A9.818 9.818 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/>
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.856L.054 23.447a.5.5 0 0 0 .607.61l5.805-1.525A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.814 9.814 0 0 1-5.012-1.374l-.36-.214-3.733.98.995-3.64-.234-.374A9.818 9.818 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z" />
               </svg>
               Chat on WhatsApp
             </a>
